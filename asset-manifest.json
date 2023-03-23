@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/forym/static/css/main.aa078aff.css",
+    "main.js": "/forym/static/js/main.557b6f3a.js",
+    "index.html": "/forym/index.html",
+    "main.aa078aff.css.map": "/forym/static/css/main.aa078aff.css.map",
+    "main.557b6f3a.js.map": "/forym/static/js/main.557b6f3a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.aa078aff.css",
+    "static/js/main.557b6f3a.js"
+  ]
+}

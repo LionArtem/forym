@@ -1,72 +1,74 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import Form from './components/Form/Form';
+import Forum from './components/Forum/Forum';
+import Header from './components/Header/Header';
+import Pagination from './components/Pagination/Pagination';
+import { api } from './utils/Api';
 
-import Footer from './components/Footer';
-import Header from './components/Header';
-import Home from './peges/Home';
-
-import Department from './components/Department/Department.jsx';
-import NodFound from './peges/nodFound';
-import Node from './components/Department/Node/Node.jsx';
-
-import Search from './components/search/Search';
+import { useSelector, useDispatch } from 'react-redux';
+import { setMessagePage } from './redax/slices/messageSlice';
 
 import {
-  chargeYardList,
-  stoveNumberFive,
-  meshReplacement,
-  ropeReplacement,
-} from './utils/constants';
-import Description from './components/Department/Node/Description';
+  setCurrentPage,
+  setNumberPage,
+  setIsAddPage,
+} from './redax/slices/paginationSlice';
 
 function App() {
+  const { messagePage } = useSelector((state) => state.message);
+
+  const { currentPage, isAddPage, numberPage } = useSelector(
+    (state) => state.pagination
+  );
+  const dispatch = useDispatch();
+
+  const AddMessage = () => {
+    api
+      .getPaginationPage(currentPage)
+      .then((res) => {
+        dispatch(setMessagePage(res));
+        if (isAddPage) {
+          dispatch(setCurrentPage(currentPage + 1));
+          dispatch(setNumberPage(numberPage + 1));
+          dispatch(setIsAddPage(false));
+        }
+        if (res.length === 10 && messagePage.length <= 9) {
+          dispatch(setIsAddPage(true));
+        }
+      })
+      .catch((res) => console.log(res));
+  };
+
+  React.useEffect(() => {
+    api
+      .getPaginationPage(currentPage)
+      .then((res) => {
+        dispatch(setMessagePage(res));
+      })
+      .catch((res) => console.log(res));
+  }, [currentPage]);
+
   return (
     <div className="page">
-      <Header />
-      <Search />
-      <main className="main">
-        <Routes>
-          <Route path="/server_fsc" element={<Home />} />
-          <Route
-            path="/charge_yard"
-            element={<Department title="Шихтовый двор" list={chargeYardList} />}
-          />
-          <Route
-            path="/coke-rumble"
-            element={
-              <Node
-                job="Замена сетки"
-                link={'/mesh-replacement'}
-                titleNode="Грохот кокса"
-              />
-            }
-          />
-          <Route
-            path="/mesh-replacement"
-            element={<Description listJob={meshReplacement} />}
-          />
-          <Route
-            path="/one_department"
-            element={<Department title="Печь №5" list={stoveNumberFive} />}
-          />
-          <Route
-            path="/roll-winch"
-            element={
-              <Node
-                job="Замена каната"
-                link={'/rope-replacement'}
-                titleNode="Лебедка подката"
-              />
-            }
-          />
-          <Route
-            path="/rope-replacement"
-            element={<Description listJob={ropeReplacement} />}
-          />
-          <Route path="*" element={<NodFound />} />
-        </Routes>
+      <header className="">
+        <Header />
+      </header>
+      <main>
+        <section>
+          {messagePage.map((obj, i) => (
+            <Forum key={i} text={obj} />
+          ))}
+        </section>
+        <section>
+          <Form AddMessage={AddMessage} />
+        </section>
+        <section>
+          <Pagination />
+        </section>
       </main>
-      <Footer />
+      <footer>
+        <p>ArtemGreen</p>
+      </footer>
     </div>
   );
 }

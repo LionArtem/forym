@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/forym/static/css/main.aa078aff.css",
-    "main.js": "/forym/static/js/main.fca3ab4d.js",
+    "main.js": "/forym/static/js/main.a63b5777.js",
     "index.html": "/forym/index.html",
     "main.aa078aff.css.map": "/forym/static/css/main.aa078aff.css.map",
-    "main.fca3ab4d.js.map": "/forym/static/js/main.fca3ab4d.js.map"
+    "main.a63b5777.js.map": "/forym/static/js/main.a63b5777.js.map"
   },
   "entrypoints": [
     "static/css/main.aa078aff.css",
-    "static/js/main.fca3ab4d.js"
+    "static/js/main.a63b5777.js"
   ]
 }

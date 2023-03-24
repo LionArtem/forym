@@ -8,9 +8,7 @@ import {
   deleteOneMessageAll,
 } from '../../redax/slices/messageSlice';
 
-import {
-  setNumberPage,
-} from '../../redax/slices/paginationSlice';
+import { setNumberPage } from '../../redax/slices/paginationSlice';
 
 import { api } from '../../utils/Api';
 
@@ -21,16 +19,23 @@ export default function Form({ AddMessage }) {
 
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
+ 
+
+  const setAllMessage = () => {
     api.getAllMessage().then((res) => {
       dispatch(setMessageAll(res));
-      dispatch(setNumberPage(Math.ceil(res.length / 10)));
     });
+  };
+
+  React.useEffect(() => {
+    setAllMessage();
+    
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (messageAll.length >= 99) {
+      console.log(messageAll);
       deletePost(messageAll[0].id);
     } else {
       addPost();
@@ -53,6 +58,7 @@ export default function Form({ AddMessage }) {
     api
       .addPost(messageValue)
       .then((res) => {
+        
         dispatch(addNewMessageAll(res));
         AddMessage();
         dispatch(setMessageValue(''));

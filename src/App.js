@@ -22,14 +22,20 @@ function App() {
   );
   const dispatch = useDispatch();
 
+  const getAllMessage = () => {
+    api.getAllMessage().then((res) => {
+      dispatch(setNumberPage(Math.ceil(res.length / 10)));
+    });
+  };
+
   const AddMessage = () => {
     api
       .getPaginationPage(currentPage)
       .then((res) => {
+        getAllMessage();
         dispatch(setMessagePage(res));
-        if (isAddPage) {
+        if (isAddPage) { 
           dispatch(setCurrentPage(currentPage + 1));
-          dispatch(setNumberPage(numberPage + 1));
           dispatch(setIsAddPage(false));
         }
         if (res.length === 10 && messagePage.length <= 9) {
@@ -38,6 +44,10 @@ function App() {
       })
       .catch((res) => console.log(res));
   };
+
+  React.useEffect(() => {
+    getAllMessage();
+  }, []);
 
   React.useEffect(() => {
     api

@@ -34,13 +34,16 @@ function App() {
       .then((res) => {
         getAllMessage();
         dispatch(setMessagePage(res));
-        if (isAddPage) { 
-          dispatch(setCurrentPage(currentPage + 1));
-          dispatch(setIsAddPage(false));
-        }
-        if (res.length === 10 && messagePage.length <= 9) {
-          dispatch(setIsAddPage(true));
-        }
+        // if (res.length === 10 && messagePage.length < 9) {
+        //   dispatch(setCurrentPage(numberPage + 1));
+        // }
+        // if (isAddPage) {
+        //   dispatch(setCurrentPage(numberPage + 1));
+        //   dispatch(setIsAddPage(false));
+        // }
+        // if (messagePage.length === 9) {
+        //   dispatch(setIsAddPage(true));
+        // }
       })
       .catch((res) => console.log(res));
   };

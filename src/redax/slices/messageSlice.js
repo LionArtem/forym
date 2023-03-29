@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {  createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   messageValue: '',
@@ -21,7 +21,6 @@ const messageSlice = createSlice({
     },
     setMessageAll(state, action) {
       state.messageAll = action.payload;
-      
     },
     addNewMessageAll(state, action) {
       state.messageAll.push(action.payload);
@@ -38,6 +37,6 @@ export const {
   addNewMessageState,
   setMessageAll,
   addNewMessageAll,
-  deleteOneMessageAll
+  deleteOneMessageAll,
 } = messageSlice.actions;
 export default messageSlice.reducer;

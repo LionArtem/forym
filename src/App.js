@@ -6,50 +6,35 @@ import Pagination from './components/Pagination/Pagination';
 import { api } from './utils/Api';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setMessagePage } from './redax/slices/messageSlice';
+import { setMessagePage, setMessageAll } from './redax/slices/messageSlice';
 
-import {
-  setCurrentPage,
-  setNumberPage,
-  setIsAddPage,
-} from './redax/slices/paginationSlice';
+import { fetchNumberPage } from './redax/slices/paginationSlice';
 
 function App() {
   const { messagePage } = useSelector((state) => state.message);
 
-  const { currentPage, isAddPage, numberPage } = useSelector(
-    (state) => state.pagination
-  );
+  const { currentPage } = useSelector((state) => state.pagination);
   const dispatch = useDispatch();
 
-  const getAllMessage = () => {
-    api.getAllMessage().then((res) => {
-      dispatch(setNumberPage(Math.ceil(res.length / 10)));
-    });
+  const getNumberPage = () => {
+    dispatch(fetchNumberPage());
   };
 
   const AddMessage = () => {
     api
       .getPaginationPage(currentPage)
       .then((res) => {
-        getAllMessage();
+        getNumberPage();
         dispatch(setMessagePage(res));
-        // if (res.length === 10 && messagePage.length < 9) {
-        //   dispatch(setCurrentPage(numberPage + 1));
-        // }
-        // if (isAddPage) {
-        //   dispatch(setCurrentPage(numberPage + 1));
-        //   dispatch(setIsAddPage(false));
-        // }
-        // if (messagePage.length === 9) {
-        //   dispatch(setIsAddPage(true));
-        // }
       })
       .catch((res) => console.log(res));
   };
 
   React.useEffect(() => {
-    getAllMessage();
+    api.getAllMessage().then((res) => {
+      dispatch(setMessageAll(res));
+    });
+    getNumberPage();
   }, []);
 
   React.useEffect(() => {

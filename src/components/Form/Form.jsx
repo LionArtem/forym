@@ -3,12 +3,9 @@ import Style from './Form.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   setMessageValue,
-  setMessageAll,
   addNewMessageAll,
   deleteOneMessageAll,
 } from '../../redax/slices/messageSlice';
-
-import { setNumberPage } from '../../redax/slices/paginationSlice';
 
 import { api } from '../../utils/Api';
 
@@ -19,23 +16,9 @@ export default function Form({ AddMessage }) {
 
   const dispatch = useDispatch();
 
- 
-
-  const setAllMessage = () => {
-    api.getAllMessage().then((res) => {
-      dispatch(setMessageAll(res));
-    });
-  };
-
-  React.useEffect(() => {
-    setAllMessage();
-    
-  }, []);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (messageAll.length >= 99) {
-      console.log(messageAll);
       deletePost(messageAll[0].id);
     } else {
       addPost();

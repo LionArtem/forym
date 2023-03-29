@@ -1,4 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+import { api } from '../../utils/Api';
+
+export const fetchNumberPage = createAsyncThunk(
+  'page/fetchNumberPage',
+  async () => {
+    const data = await api.getAllMessage();
+    return data;
+  }
+);
 
 const initialState = {
   currentPage: 1,
@@ -13,12 +23,20 @@ const paginationSlice = createSlice({
     setCurrentPage(state, action) {
       state.currentPage = action.payload;
     },
-    setNumberPage(state, action) {
-      state.numberPage = action.payload;
-    },
     setIsAddPage(state, action) {
       state.isAddPage = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchNumberPage.pending, (state) => {
+      console.log('загрузка');
+    });
+    builder.addCase(fetchNumberPage.fulfilled, (state, { payload }) => {
+      state.numberPage = Math.ceil(payload.length / 10);
+    });
+    builder.addCase(fetchNumberPage.rejected, (state) => {
+      console.log('error');
+    });
   },
 });
 

@@ -58,7 +58,7 @@ function App() {
           ))}
         </section>
         <section>
-          <Form AddMessage={AddMessage} />
+          {(messagePage.length < 10) && <Form AddMessage={AddMessage} />}
         </section>
         <section>
           <Pagination />

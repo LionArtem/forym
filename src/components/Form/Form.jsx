@@ -12,7 +12,9 @@ import { api } from '../../utils/Api';
 export default function Form({ AddMessage }) {
   const textAreaRef = React.useRef();
   const formRef = React.useRef();
-  const { messageValue, messageAll } = useSelector((state) => state.message);
+  const { messageValue, messageAll, messagePage } = useSelector(
+    (state) => state.message
+  );
 
   const dispatch = useDispatch();
 
@@ -41,20 +43,21 @@ export default function Form({ AddMessage }) {
     api
       .addPost(messageValue)
       .then((res) => {
-        
         dispatch(addNewMessageAll(res));
         AddMessage();
         dispatch(setMessageValue(''));
         textAreaRef.current.focus();
-        setTimeout(
-          () =>
-            formRef.current.scrollIntoView({
-              behavior: 'smooth',
-              block: 'nearest',
-              inline: 'start',
-            }),
-          500
-        );
+        if (messagePage.length <= 8) {
+          setTimeout(
+            () =>
+              formRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest',
+                inline: 'start',
+              }),
+            500
+          );
+        }
       })
       .catch((error) => {
         console.log(error);

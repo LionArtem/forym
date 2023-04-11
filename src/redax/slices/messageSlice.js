@@ -1,4 +1,17 @@
-import {  createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+
+import { setNumberOfAllPages } from '../slices/paginationSlice';
+
+import { api } from '../../utils/Api';
+
+export const fetchMessageAll = createAsyncThunk(
+  'page/fetchNumberPage',
+  async (params, thunkAPI) => {
+    const data = await api.getAllMessage();
+    thunkAPI.dispatch(setNumberOfAllPages(data));
+    return data;
+  }
+);
 
 const initialState = {
   messageValue: '',
@@ -28,6 +41,17 @@ const messageSlice = createSlice({
     deleteOneMessageAll(state) {
       state.messageAll.shift();
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchMessageAll.pending, (state) => {
+      console.log('загрузка всех сообщений');
+    });
+    builder.addCase(fetchMessageAll.fulfilled, (state, { payload }) => {
+      state.messageAll = payload;
+    });
+    builder.addCase(fetchMessageAll.rejected, (state) => {
+      console.log('ошибка загрузки все сообщений');
+    });
   },
 });
 

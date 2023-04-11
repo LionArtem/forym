@@ -3,48 +3,29 @@ import Form from './components/Form/Form';
 import Forum from './components/Forum/Forum';
 import Header from './components/Header/Header';
 import Pagination from './components/Pagination/Pagination';
-import { api } from './utils/Api';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setMessagePage, setMessageAll } from './redax/slices/messageSlice';
-
-import { fetchNumberPage } from './redax/slices/paginationSlice';
+import { fetchMessageAll } from './redax/slices/messageSlice';
+import { fetchPaginationPage } from './redax/slices/paginationSlice';
 
 function App() {
   const { messagePage } = useSelector((state) => state.message);
 
-  const { currentPage } = useSelector((state) => state.pagination);
+  const { pageNumber } = useSelector((state) => state.pagination);
   const dispatch = useDispatch();
 
-  const getNumberPage = () => {
-    dispatch(fetchNumberPage());
-  };
-
   const AddMessage = () => {
-    api
-      .getPaginationPage(currentPage)
-      .then((res) => {
-        getNumberPage();
-        dispatch(setMessagePage(res));
-      })
-      .catch((res) => console.log(res));
+    dispatch(fetchPaginationPage(pageNumber));
+    dispatch(fetchMessageAll());
   };
 
   React.useEffect(() => {
-    api.getAllMessage().then((res) => {
-      dispatch(setMessageAll(res));
-    });
-    getNumberPage();
+    dispatch(fetchMessageAll());
   }, []);
 
   React.useEffect(() => {
-    api
-      .getPaginationPage(currentPage)
-      .then((res) => {
-        dispatch(setMessagePage(res));
-      })
-      .catch((res) => console.log(res));
-  }, [currentPage]);
+    dispatch(fetchPaginationPage(pageNumber));
+  }, [pageNumber]);
 
   return (
     <div className="page">
@@ -58,7 +39,7 @@ function App() {
           ))}
         </section>
         <section>
-          {(messagePage.length < 10) && <Form AddMessage={AddMessage} />}
+          {messagePage.length < 10 && <Form AddMessage={AddMessage} />}
         </section>
         <section>
           <Pagination />

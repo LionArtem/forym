@@ -2,17 +2,20 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { api } from '../../utils/Api';
 
-export const fetchNumberPage = createAsyncThunk(
+import { setMessagePage } from '../slices/messageSlice';
+
+export const fetchPaginationPage = createAsyncThunk(
   'page/fetchNumberPage',
-  async () => {
-    const data = await api.getAllMessage();
+  async (params, thunkAPI) => {
+    const data = await api.getPaginationPage(params);
+    thunkAPI.dispatch(setMessagePage(data));
     return data;
   }
 );
 
 const initialState = {
-  currentPage: 1,
-  numberPage: 1,
+  pageNumber: 1,
+  numberOfAllPages: 1,
   isAddPage: false,
 };
 
@@ -20,26 +23,33 @@ const paginationSlice = createSlice({
   name: 'pagination',
   initialState,
   reducers: {
-    setCurrentPage(state, action) {
-      state.currentPage = action.payload;
+    setPageNumber(state, action) {
+      state.pageNumber = action.payload;
     },
     setIsAddPage(state, action) {
       state.isAddPage = action.payload;
     },
+    setNumberOfAllPages(state, action) {
+      if (action.payload.length % 10 === 0) {
+        state.numberOfAllPages = action.payload.length / 10 + 1;
+        return;
+      }
+      state.numberOfAllPages = Math.ceil(action.payload.length / 10);
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchNumberPage.pending, (state) => {
-      console.log('загрузка');
+    builder.addCase(fetchPaginationPage.pending, (state) => {
+      console.log('загрузка пагинации');
     });
-    builder.addCase(fetchNumberPage.fulfilled, (state, { payload }) => {
-      state.numberPage = Math.ceil(payload.length / 10);
+    builder.addCase(fetchPaginationPage.fulfilled, (state, { payload }) => {
+      state.messageAll = payload;
     });
-    builder.addCase(fetchNumberPage.rejected, (state) => {
-      console.log('error');
+    builder.addCase(fetchPaginationPage.rejected, (state) => {
+      console.log('ошибка загрузки пагинации');
     });
   },
 });
 
-export const { setCurrentPage, setNumberPage, setIsAddPage } =
+export const { setPageNumber, setNumberOfAllPages, setIsAddPage } =
   paginationSlice.actions;
 export default paginationSlice.reducer;

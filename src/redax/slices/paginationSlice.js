@@ -5,7 +5,7 @@ import { api } from '../../utils/Api';
 import { setMessagePage } from '../slices/messageSlice';
 
 export const fetchPaginationPage = createAsyncThunk(
-  'page/fetchNumberPage',
+  'page/fetchPaginationPage',
   async (params, thunkAPI) => {
     const data = await api.getPaginationPage(params);
     thunkAPI.dispatch(setMessagePage(data));

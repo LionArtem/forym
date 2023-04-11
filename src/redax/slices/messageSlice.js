@@ -5,7 +5,7 @@ import { setNumberOfAllPages } from '../slices/paginationSlice';
 import { api } from '../../utils/Api';
 
 export const fetchMessageAll = createAsyncThunk(
-  'page/fetchNumberPage',
+  'page/fetchMessageAll',
   async (params, thunkAPI) => {
     const data = await api.getAllMessage();
     thunkAPI.dispatch(setNumberOfAllPages(data));

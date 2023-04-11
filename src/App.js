@@ -14,11 +14,6 @@ function App() {
   const { pageNumber } = useSelector((state) => state.pagination);
   const dispatch = useDispatch();
 
-  const AddMessage = () => {
-    dispatch(fetchPaginationPage(pageNumber));
-    dispatch(fetchMessageAll());
-  };
-
   React.useEffect(() => {
     dispatch(fetchMessageAll());
   }, []);
@@ -39,7 +34,7 @@ function App() {
           ))}
         </section>
         <section>
-          {messagePage.length < 10 && <Form AddMessage={AddMessage} />}
+          {messagePage.length < 10 && <Form />}
         </section>
         <section>
           <Pagination />

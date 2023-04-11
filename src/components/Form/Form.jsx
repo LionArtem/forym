@@ -5,16 +5,20 @@ import {
   setMessageValue,
   addNewMessageAll,
   deleteOneMessageAll,
+  fetchMessageAll
 } from '../../redax/slices/messageSlice';
+import { fetchPaginationPage } from '../../redax/slices/paginationSlice';
 
 import { api } from '../../utils/Api';
 
-export default function Form({ AddMessage }) {
+export default function Form() {
   const textAreaRef = React.useRef();
   const formRef = React.useRef();
   const { messageValue, messageAll, messagePage } = useSelector(
     (state) => state.message
   );
+
+  const { pageNumber } = useSelector((state) => state.pagination);
 
   const dispatch = useDispatch();
 
@@ -44,7 +48,8 @@ export default function Form({ AddMessage }) {
       .addPost(messageValue)
       .then((res) => {
         dispatch(addNewMessageAll(res));
-        AddMessage();
+        dispatch(fetchPaginationPage(pageNumber));
+        dispatch(fetchMessageAll());
         dispatch(setMessageValue(''));
         textAreaRef.current.focus();
         if (messagePage.length <= 8) {

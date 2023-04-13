@@ -26,11 +26,13 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(messageValue);
-    if (messageAll.length >= 99) {
-      deletePost(messageAll[0].id);
-    } else {
-      addPost();
+    if (messageValue.length) {
+      if (messageAll.length >= 99) {
+        deletePost(messageAll[0].id);
+      } else {
+        addPost();
+      }
+      return;
     }
   };
 
@@ -79,6 +81,7 @@ export default function Form() {
       className={Style.form}
     >
       <textarea
+        placeholder="text"
         ref={textAreaRef}
         value={messageValue}
         onChange={(e) => {

@@ -55,6 +55,8 @@ const messageSlice = createSlice({
   },
 });
 
+export const selectMessage = (state) => state.message;
+
 export const {
   setMessageValue,
   setMessagePage,

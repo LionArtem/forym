@@ -5,13 +5,13 @@ import Header from './components/Header/Header';
 import Pagination from './components/Pagination/Pagination';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchMessageAll } from './redax/slices/messageSlice';
-import { fetchPaginationPage } from './redax/slices/paginationSlice';
+import { fetchMessageAll, selectMessage } from './redax/slices/messageSlice';
+import { fetchPaginationPage, selectPagination } from './redax/slices/paginationSlice';
 
 function App() {
-  const { messagePage } = useSelector((state) => state.message);
+  const { messagePage } = useSelector(selectMessage);
 
-  const { pageNumber } = useSelector((state) => state.pagination);
+  const { pageNumber } = useSelector(selectPagination);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -33,9 +33,7 @@ function App() {
             <Forum key={i} text={obj} />
           ))}
         </section>
-        <section>
-          {messagePage.length < 10 && <Form />}
-        </section>
+        <section>{messagePage.length < 10 && <Form />}</section>
         <section>
           <Pagination />
         </section>

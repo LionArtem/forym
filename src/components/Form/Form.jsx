@@ -5,20 +5,19 @@ import {
   setMessageValue,
   addNewMessageAll,
   deleteOneMessageAll,
-  fetchMessageAll
+  fetchMessageAll,
+  selectMessage
 } from '../../redax/slices/messageSlice';
-import { fetchPaginationPage } from '../../redax/slices/paginationSlice';
+import { fetchPaginationPage, selectPagination } from '../../redax/slices/paginationSlice';
 
 import { api } from '../../utils/Api';
 
 export default function Form() {
   const textAreaRef = React.useRef();
   const formRef = React.useRef();
-  const { messageValue, messageAll, messagePage } = useSelector(
-    (state) => state.message
-  );
+  const { messageValue, messageAll, messagePage } = useSelector(selectMessage);
 
-  const { pageNumber } = useSelector((state) => state.pagination);
+  const { pageNumber } = useSelector(selectPagination);
 
   const dispatch = useDispatch();
 

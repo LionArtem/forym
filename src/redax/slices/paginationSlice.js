@@ -50,6 +50,8 @@ const paginationSlice = createSlice({
   },
 });
 
+export const selectPagination = (state) => state.pagination;
+
 export const { setPageNumber, setNumberOfAllPages, setIsAddPage } =
   paginationSlice.actions;
 export default paginationSlice.reducer;

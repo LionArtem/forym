@@ -4,12 +4,12 @@ import ReactPaginate from 'react-paginate';
 
 import style from './Pagination.module.scss';
 
-import { setPageNumber } from '../../redax/slices/paginationSlice';
+import { selectPagination, setPageNumber } from '../../redax/slices/paginationSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
 export default function Pagination() {
   const dispatch = useDispatch();
-  const { pageNumber, numberOfAllPages } = useSelector((state) => state.pagination);
+  const { pageNumber, numberOfAllPages } = useSelector(selectPagination);
 
   const onChangePage = (number) => {
     dispatch(setPageNumber(number));

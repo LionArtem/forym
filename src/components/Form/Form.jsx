@@ -6,9 +6,12 @@ import {
   addNewMessageAll,
   deleteOneMessageAll,
   fetchMessageAll,
-  selectMessage
+  selectMessage,
 } from '../../redax/slices/messageSlice';
-import { fetchPaginationPage, selectPagination } from '../../redax/slices/paginationSlice';
+import {
+  fetchPaginationPage,
+  selectPagination,
+} from '../../redax/slices/paginationSlice';
 
 import { api } from '../../utils/Api';
 
@@ -23,6 +26,7 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(messageValue);
     if (messageAll.length >= 99) {
       deletePost(messageAll[0].id);
     } else {
@@ -77,7 +81,9 @@ export default function Form() {
       <textarea
         ref={textAreaRef}
         value={messageValue}
-        onChange={(e) => dispatch(setMessageValue(e.target.value))}
+        onChange={(e) => {
+          dispatch(setMessageValue(e.target.value));
+        }}
         className={Style.input}
         type="text"
       ></textarea>

@@ -16,7 +16,7 @@ export const fetchPaginationPage = createAsyncThunk(
 const initialState = {
   pageNumber: 1,
   numberOfAllPages: 1,
-  isAddPage: false,
+  isAddPage: true,
 };
 
 const paginationSlice = createSlice({
@@ -40,11 +40,14 @@ const paginationSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(fetchPaginationPage.pending, (state) => {
       console.log('загрузка пагинации');
+      state.isAddPage = true;
     });
     builder.addCase(fetchPaginationPage.fulfilled, (state, { payload }) => {
+      state.isAddPage = false;
       state.messageAll = payload;
     });
     builder.addCase(fetchPaginationPage.rejected, (state) => {
+      state.isAddPage = 'error';
       console.log('ошибка загрузки пагинации');
     });
   },

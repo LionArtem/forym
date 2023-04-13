@@ -6,12 +6,16 @@ import Pagination from './components/Pagination/Pagination';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMessageAll, selectMessage } from './redax/slices/messageSlice';
-import { fetchPaginationPage, selectPagination } from './redax/slices/paginationSlice';
+import {
+  fetchPaginationPage,
+  selectPagination,
+} from './redax/slices/paginationSlice';
+import MyLoader from './components/Forum/sceleton';
 
 function App() {
   const { messagePage } = useSelector(selectMessage);
 
-  const { pageNumber } = useSelector(selectPagination);
+  const { pageNumber, isAddPage } = useSelector(selectPagination);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -29,9 +33,12 @@ function App() {
       </header>
       <main>
         <section>
-          {messagePage.map((obj, i) => (
-            <Forum key={i} text={obj} />
-          ))}
+          {/* {[...new Array(10)].map((_, i) => (
+            <MyLoader key={i} />
+          ))} */}
+          {isAddPage
+            ? [...new Array(6)].map((_, i) => <MyLoader key={i} />)
+            : messagePage.map((obj, i) => <Forum key={i} text={obj} />)}
         </section>
         <section>{messagePage.length < 10 && <Form />}</section>
         <section>
